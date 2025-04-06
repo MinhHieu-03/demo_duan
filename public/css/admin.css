@@ -1,0 +1,47 @@
+/* public/css/admin.css */
+
+body {
+    background-color: #f8f9fa;
+}
+
+h2 {
+    color: #ff4757;
+    text-align: center;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px #ffa502;
+}
+
+.admin-menu {
+    margin-top: 2rem;
+}
+
+.admin-menu .list-group-item {
+    background-color: #a2c1e0;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 2px solid #3742fa;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.admin-menu .list-group-item:hover {
+    background-color: #ffa502;
+    color: #ffffff;
+    border: 2px solid #ff6348;
+}
+
+.admin-menu .list-group-item-action {
+    display: block;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    border: 3px solid #3742fa;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
