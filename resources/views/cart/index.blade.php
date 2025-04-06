@@ -17,6 +17,7 @@
                             <table class="table align-middle text-center">
                                 <thead class="bg-primary text-white">
                                     <tr>
+                                        <th>Hình ảnh</th>
                                         <th>Sản phẩm</th>
                                         <th>Giá</th>
                                         <th>Số lượng</th>
@@ -27,6 +28,12 @@
                                 <tbody>
                                     @foreach ($cart as $id => $item)
                                         <tr class="border-bottom">
+                                            <td>
+                                                <img src="{{  $item['image'] }}" 
+                                                     alt="{{ $item['name'] }}" 
+                                                     class="img-thumbnail" 
+                                                     style="width: 100px; height: 100px; object-fit: cover;">
+                                            </td>
                                             <td class="fw-semibold">{{ $item['name'] }}</td>
                                             <td class="text-danger fw-bold">{{ number_format($item['price'], 0, ',', '.') }} VND</td>
                                             <td>

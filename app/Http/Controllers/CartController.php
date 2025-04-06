@@ -17,33 +17,34 @@ class CartController extends Controller
     // public function add(Request $request, Category $category)
 
     public function add(Request $request, $slug)
-{
-    $category = Category::where('slug', $slug)->firstOrFail();
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
 
-    $cart = session()->get('cart', []);
-    
-    $price = $category->sale_price ?? $category->price;
+        $cart = session()->get('cart', []);
+        
+        $price = $category->sale_price ?? $category->price;
 
-    if (isset($cart[$slug])) {
-        $cart[$slug]['quantity']++;
-    } else {
-        $cart[$slug] = [
-            'name' => $category->name,
-            'price' => $price,
-            'original_price' => $category->price,
-            'quantity' => 1
-        ];
+        if (isset($cart[$slug])) {
+            $cart[$slug]['quantity']++;
+        } else {
+            $cart[$slug] = [
+                'name' => $category->name,
+                'price' => $price,
+                'original_price' => $category->price,
+                'quantity' => 1,
+                'image' => $category->image  // Add this line
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        // Kiểm tra nếu là mua ngay -> chuyển đến giỏ hàng
+        if ($request->has('buy_now')) {
+            return redirect()->route('cart.index')->with('success', 'Đã thêm vào giỏ hàng!');
+        }
+
+        return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
     }
-
-    session()->put('cart', $cart);
-
-    // Kiểm tra nếu là mua ngay -> chuyển đến giỏ hàng
-    if ($request->has('buy_now')) {
-        return redirect()->route('cart.index')->with('success', 'Đã thêm vào giỏ hàng!');
-    }
-
-    return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
-}
 
 
     public function index()

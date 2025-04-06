@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center min-vh-100 bg-light">
+<div class=" d-flex justify-content-center align-items-center min-vh-100 bg-light">
     <div class="col-md-5">
         <div class="card shadow-lg border-0 rounded-4">
             <div class="card-body p-4">
@@ -71,6 +71,22 @@
 @endsection
 <style>
     .input-group {
-            margin-top: 17px;
-        }
+        margin-top: 17px;
+    }
+    .form-control {
+        background-color: white !important;
+        border: 1px solid black !important;
+        color: black !important;
+    }
+    .form-control::placeholder {
+        color: #333 !important;
+        opacity: 0.7;
+    }
+    .input-group .btn-outline-secondary {
+        border: 1px solid black;
+    }
+    .toggle-password {
+        background-color: transparent !important;
+        color: black !important;
+    }
 </style>
