@@ -12,10 +12,6 @@ use App\Notifications\OrderNotification;
 
 class CartController extends Controller
 {
-    // Thêm sản phẩm vào giỏ hàng
-    //
-    // public function add(Request $request, Category $category)
-
     public function add(Request $request, $slug)
     {
         $category = Category::where('slug', $slug)->firstOrFail();
@@ -43,7 +39,11 @@ class CartController extends Controller
             return redirect()->route('cart.index')->with('success', 'Đã thêm vào giỏ hàng!');
         }
 
-        return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
+      // Gửi thông báo thành công
+        session()->flash('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+
+        return redirect()->back();
+        // return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
     }
 
 

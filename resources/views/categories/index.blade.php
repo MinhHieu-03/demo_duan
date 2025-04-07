@@ -6,9 +6,9 @@
         
         <div class="d-flex justify-content-between align-items-center mb-3">
             <!-- Form tìm kiếm bên trái -->
-            <form action="{{ route('categories.index') }}" method="GET" class="mb-0" style="max-width: 300px; width: 100%;">
+            <form id="searchForm" action="{{ route('categories.index') }}" method="GET" class="mb-0" style="max-width: 300px; width: 100%;">
                 <div class="input-group">
-                    <input type="text" name="query" class="form-control" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm" value="{{ request('query') }}">
+                    <input id="searchInput" type="text" name="query" class="form-control" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm" value="{{ request('query') }}">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search"></i>
                     </button>
@@ -75,3 +75,17 @@
         </table>
     </div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const searchForm = document.getElementById('searchForm');
+
+        searchInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Ngăn hành vi mặc định
+                searchForm.submit(); // Gửi form tìm kiếm
+            }
+        });
+    });
+</script>

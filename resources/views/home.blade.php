@@ -105,7 +105,7 @@
         @include('partials.product-items', ['products' => $regularProducts])
     </div>
     <div class="text-center mt-3">
-        <button id="load-more-regular" class="btn btn-outline-primary" data-offset="6">Xem thêm</button>
+        <button id="load-more-regular" class="btn btn-outline-dark " data-offset="6">Xem thêm<i class="fa-solid fa-arrow-down icon"></i></button>
     </div>
 </div>
 
@@ -166,6 +166,31 @@
 });
 
 </script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right"
+    };
+
+    @if (session('success'))
+        toastr.success("{{ session('success') }}");
+    @endif
+
+    @if (session('error'))
+        toastr.error("{{ session('error') }}");
+    @endif
+
+    @if (session('info'))
+        toastr.info("{{ session('info') }}");
+    @endif
+
+    @if (session('warning'))
+        toastr.warning("{{ session('warning') }}");
+    @endif
+</script>
+
+
 
 
 <style>
@@ -282,4 +307,8 @@
             opacity: 1;
         }
 
+        .icon {
+            margin-left: 10px;
+            font-size: 12px;
+        }
     </style>

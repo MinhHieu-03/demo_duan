@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
     <style>
         body {
             background-color: #f0f0f0; /* Màu xám nền ngoài */
@@ -33,6 +34,7 @@
         /* Hiệu ứng hover - vàng nhạt */
         .navbar-nav .nav-link:hover {
             color: #FFE066 !important;
+            background: rgba(255, 255, 255, 0) !important; /* Nền trắng trong suốt */
             transition: all 0.5s;
         }
 
@@ -77,8 +79,11 @@
             background: #ffc107;
             color: #333;
             font-size: 0.8rem;
-            padding: 5px 8px;
+            padding: 2px 5px;
             border-radius: 10px;
+            position: absolute;
+            top: -3px;
+            right: 0;
         }
 
         /* Định dạng cho chữ nhỏ */
@@ -123,6 +128,18 @@
         .text-decoration-none{
             color: #8C367B;
         }
+        .input-search::placeholder {
+            color: white !important; /* Đổi màu chữ placeholder thành trắng */
+        }
+        .input-search {
+            background-color: #8C367B !important; /* Màu nền ô tìm kiếm */
+            color: white !important; /* Màu chữ trắng */
+            border: 1px solid #FFE066 !important; /* Đường viền vàng nhạt */
+        }
+        .icon-bell {
+            position: relative;
+        }
+        .
     </style>
 
 </head>
@@ -189,7 +206,7 @@
                     <li class="">
                         <form action="{{ route('search') }}" method="GET" class="">
                             <div class="input-group ">
-                                <input type="text" name="query" class="form-control" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm">
+                                <input type="text" name="query" class="form-control input-search" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -205,27 +222,27 @@
                     </li>
 
                     <ul class="navbar-nav ml-auto">
-                    @auth
-                        <li class="nav-item dropdowns">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-                                <i class="fas fa-bell"></i> <!-- Icon chuông -->
-                                <span class="badge badge-light">{{ auth()->user()->unreadNotifications->count() }}</span>
-                            </a>
+                        @auth
+                            <li class="nav-item dropdowns">
+                                <a id="navbarDropdown" class="nav-link icon-bell" href="#" role="button" data-toggle="dropdown">
+                                    <i class="fas fa-bell"></i> <!-- Icon chuông -->
+                                    <span class="badge badge-light ">{{ auth()->user()->unreadNotifications->count() }}</span>
+                                </a>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                @forelse (auth()->user()->unreadNotifications as $notification)
-                                    <a href="{{ route('notifications.read', $notification->id) }}" class="dropdown-item">
-                                        {{ $notification->data['message'] }}
-                                        <small class="text-muted d-block">{{ $notification->created_at->diffForHumans() }}</small>
-                                    </a>
-                                @empty
-                                    <a href="#" class="dropdown-item">Không có thông báo</a>
-                                @endforelse
-                            </div>
-                        </li>
-                    @endauth
-                </ul>
-                
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @forelse (auth()->user()->unreadNotifications as $notification)
+                                        <a href="{{ route('notifications.read', $notification->id) }}" class="dropdown-item">
+                                            {{ $notification->data['message'] }}
+                                            <small class="text-muted d-block">{{ $notification->created_at->diffForHumans() }}</small>
+                                        </a>
+                                    @empty
+                                        <a href="#" class="dropdown-item">Không có thông báo</a>
+                                    @endforelse
+                                </div>
+                            </li>
+                        @endauth
+                    </ul>
+
                     <!-- Kiểm tra trạng thái đăng nhập -->
                     <li class="nav-item">
                         @if (Auth::check())
@@ -244,12 +261,10 @@
 
                     <li class="nav-item">
                         <a class="nav-link active d-flex align-items-center" href="{{ route('messages.index') }}">
-                            <i class="fas fa-envelope me-2"></i> Đổi trả
+                            <i class="fas fa-envelope me-2"></i> Liên hệ
                         </a>
                     </li>
-                </ul>
-                
-                
+                </ul>           
 
                 <!-- Giỏ hàng -->
                 <div class="ms-3">
@@ -328,9 +343,5 @@
             </div>
         </div>
     </footer>
-
-     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.js"></script>
 </body>
 </html>

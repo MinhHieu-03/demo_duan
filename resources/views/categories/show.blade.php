@@ -78,7 +78,7 @@
         <!-- Thêm bình luận -->
         <div class="col-md-7">
             <h3 class="fw-bold">Thêm bình luận:</h3>
-            <form action="{{ route('comments.store', $category->id) }}" method="POST">
+            <form id="commentForm" action="{{ route('comments.store', $category->id) }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Tên:</label>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="comment" class="form-label">Bình luận:</label>
-                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                    <textarea class="form-control" id="commentInput" name="comment" rows="3" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primarys">Gửi</button>
             </form>
@@ -95,42 +95,57 @@
     </div>
 </div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const commentInput = document.getElementById('commentInput');
+        const commentForm = document.getElementById('commentForm');
+
+        commentInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault(); // Ngăn xuống dòng
+                commentForm.submit(); // Gửi form bình luận
+            }
+        });
+    });
+</script>
+
 <style>
     .input-group {
         margin-top: 17px;
     }
     .btn-outline-primary {
-            border: 2px solid #8C367B !important;
-            color: #8C367B !important;
-            background-color: white !important; /* Đảm bảo nền ban đầu là trắng */
-            transition: all 0.3s ease-in-out; /* Hiệu ứng chuyển đổi mượt mà */
-        }
+        border: 2px solid #8C367B !important;
+        color: #8C367B !important;
+        background-color: white !important;
+        transition: all 0.3s ease-in-out;
+    }
 
-        .btn-outline-primary:hover {
-            background-color: #8C367B !important;
-            color: white !important;
-            transform: scale(1.05); /* Làm nút to lên một chút khi hover */
-        }
-        .btn-outline-primary:focus {
-            box-shadow: 0 0 0 0.25rem rgba(140, 54, 123, 0.5); /* Tạo hiệu ứng focus */
-        }
-        .btn-successs {
-            background-color: #8C367B !important;
-            color: white !important;
-        }
-        .btn-successs:hover {
-            background-color: #8C367B !important;
-            color: white !important;
-            transform: scale(1.05); /* Làm nút to lên một chút khi hover */
-        }
+    .btn-outline-primary:hover {
+        background-color: #8C367B !important;
+        color: white !important;
+        transform: scale(1.05);
+    }
+    .btn-outline-primary:focus {
+        box-shadow: 0 0 0 0.25rem rgba(140, 54, 123, 0.5);
+    }
+    .btn-successs {
+        background-color: #8C367B !important;
+        color: white !important;
+    }
+    .btn-successs:hover {
+        background-color: #8C367B !important;
+        color: white !important;
+        transform: scale(1.05);
+    }
 
-        .btn-primarys {
-            background-color: #8C367B !important;
-            color: white !important;
-        }
-        .btn-primarys:hover {
-            background-color: #8C367B !important;
-            color: white !important;
-            transform: scale(1.05); /* Làm nút to lên một chút khi hover */
-        }
+    .btn-primarys {
+        background-color: #8C367B !important;
+        color: white !important;
+    }
+    .btn-primarys:hover {
+        background-color: #8C367B !important;
+        color: white !important;
+        transform: scale(1.05);
+    }
 </style>
