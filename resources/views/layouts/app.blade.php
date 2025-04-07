@@ -9,7 +9,8 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <style>
         body {
             background-color: #f0f0f0; /* Màu xám nền ngoài */
         }
@@ -115,6 +116,14 @@
             display: none;
             position: absolute;
         }
+
+        .dropdown:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
         .dropdown-submenu:hover .dropdown-menu {
             display: block;
         }
@@ -138,7 +147,7 @@
         .icon-bell {
             position: relative;
         }
-        .
+        
     </style>
 
 </head>
@@ -342,5 +351,6 @@
             </div>
         </div>
     </footer>
+
 </body>
 </html>
