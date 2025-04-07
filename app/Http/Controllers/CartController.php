@@ -39,7 +39,7 @@ class CartController extends Controller
             return redirect()->route('cart.index')->with('success', 'Đã thêm vào giỏ hàng!');
         }
 
-      // Gửi thông báo thành công
+        // Gửi thông báo thành công
         session()->flash('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
 
         return redirect()->back();
