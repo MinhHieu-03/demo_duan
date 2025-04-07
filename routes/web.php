@@ -129,8 +129,8 @@ Route::post('comments/{comment}/reply', [CommentController::class, 'reply'])->na
 Route::middleware(['auth'])->group(function () {
     Route::post('/categories/{category:slug}/comments', [CommentController::class, 'store'])->name('comments.store');
 });
-
-
+Route::get('/admin/comments', [CommentController::class, 'index'])->name('admin.comments.index');
+Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 
 //NotificationController

@@ -123,8 +123,8 @@
                 <li><a href="{{ url('/admin/revenue-report') }}" class="nav-link font-weight-bold">📊 Quản lý Thống kê</a></li>
                 <li><a href="{{ url('/categories') }}" class="nav-link font-weight-bold">📦 Quản lý Sản phẩm</a></li>
                 <li><a href="{{ url('/admin/orders') }}" class="nav-link">🛒 Quản lý Đơn hàng</a></li>
-                <li><a href="{{ route('admin.messages.index') }}" class="nav-link">✉️ Tin nhắn</a></li>
-                
+                <li><a href="{{ route('admin.messages.index') }}" class="nav-link">✉️ Tin nhắn | Liên hệ</a></li>
+                <li><a href="{{ route('admin.comments.index') }}" class="nav-link">💬 Quản lý Bình luận</a></li>
                 <ul class="navbar-nav ml-auto">
                 @auth
                     <li class="nav-item dropdown">

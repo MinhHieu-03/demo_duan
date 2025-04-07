@@ -2,81 +2,174 @@
 
 @section('content')
 <div class="container mt-5 mb-5">
-    <!-- Thông tin sản phẩm -->
+    <!-- Tiêu đề -->
     <div class="row">
-        <div class="col-md-6">
-            @if ($category && $category->image)
-                <img src="{{ asset($category->image) }}" alt="{{ $category->name }}" class="img-fluid">
-            @else
-                <p>Không có hình ảnh</p>
-            @endif
+        <div class="col-md-12">
+            <h2 class="text-center">Quản lý bình luận</h2>
+            <p class="text-muted text-center">Danh sách các bình luận từ khách hàng</p>
         </div>
-        <div class="col-md-6">
-            @if ($category)
-                <h2>{{ $category->name }}</h2>
-                <strong>Chi tiết:</strong>
-                <ul>
-                    <li>{!! $category->description !!}</li>
-                </ul>
-                <p><strong>Giá:</strong> {{ number_format($category->price) }} VND</p>
+    </div>
+
+    <!-- Bình luận mới nhất -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h4 class="mb-3">Bình luận mới nhất</h4>
+            @if ($newComments && $newComments->count() > 0)
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Tên người dùng</th>
+                            <th>Sản phẩm</th>
+                            <th>Ảnh</th>
+                            <th>Bình luận</th>
+                            <th>Ngày tạo</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($newComments as $index => $comment)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ optional($comment->user)->name ?? $comment->name ?? 'Khách' }}</td>
+                                <td>{{ $comment->category->name ?? 'Không xác định' }}</td>
+                                <td>
+                                    @if (!empty($comment->category->image))
+                                        <img src="{{ asset($comment->category->image) }}" 
+                                            alt="{{ $comment->category->name }}" 
+                                            class="img-thumbnail" 
+                                            style="width: 80px; height: 80px; object-fit: cover;">
+                                    @else
+                                        <span class="text-muted">Không có ảnh</span>
+                                    @endif
+                                </td>
+                                <td>{{ $comment->comment }}</td>
+                                <td>{{ $comment->created_at->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    <!-- Nút phản hồi -->
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#replyModal_{{ $comment->id }}">Phản hồi</button>
+
+                                    
+                                </td>
+                            </tr>
+
+                            <!-- Modal phản hồi -->
+                            <div class="modal fade" id="replyModal_{{ $comment->id }}" tabindex="-1" aria-labelledby="replyModalLabel_{{ $comment->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="replyModalLabel_{{ $comment->id }}">Phản hồi bình luận</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('comments.reply', $comment->id) }}" method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="admin_reply_{{ $comment->id }}" class="form-label">Nội dung phản hồi:</label>
+                                                    <textarea class="form-control" id="admin_reply_{{ $comment->id }}" name="admin_reply" rows="3" required>{{ old('admin_reply', $comment->admin_reply) }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                <button type="submit" class="btn btn-primary">Gửi phản hồi</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </tbody>
+                </table>
             @else
-                <p>Sản phẩm không tồn tại.</p>
+                <p class="text-center text-muted">Không có bình luận mới.</p>
             @endif
         </div>
     </div>
 
-    <!-- Phần bình luận -->
+    <!-- Bình luận đã phản hồi -->
     <div class="row mt-5">
-        <div class="col-md-12 review">
-            <h3>Bình luận</h3>
-            @if ($category && $category->comments && $category->comments->count() > 0)
-                @foreach($category->comments as $comment)
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <strong>{{ optional($comment->user)->name ?? $comment->name ?? 'Khách' }}</strong>
-                            <p>{{ $comment->comment }}</p>
-                            <small>{{ $comment->created_at->format('d/m/Y H:i') }}</small>
-
-                            @if ($comment->admin_reply)
-                                <div class="admin-reply">
-                                    <strong>Admin Phản Hồi:</strong>
-                                    <p>{{ $comment->admin_reply }}</p>
-                                </div>
-                            @endif
-
-                            @if (auth()->check() && auth()->user()->isAdmin())
-                                <form action="{{ route('comments.reply', $comment->id) }}" method="POST">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="admin_reply_{{ $comment->id }}" class="form-label">Phản Hồi:</label>
-                                        <textarea class="form-control" id="admin_reply_{{ $comment->id }}" name="admin_reply" rows="2" required>{{ old('admin_reply') }}</textarea>
+        <div class="col-md-12">
+            <h4 class="mb-3">Bình luận đã phản hồi</h4>
+            @if ($repliedComments && $repliedComments->count() > 0)
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Tên người dùng</th>
+                            <th>Sản phẩm</th>
+                            <th>Ảnh</th>
+                            <th>Bình luận</th>
+                            <th>Ngày tạo</th>
+                            <th>Phản hồi của Admin</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($repliedComments as $index => $comment)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ optional($comment->user)->name ?? $comment->name ?? 'Khách' }}</td>
+                                <td>{{ $comment->category->name ?? 'Không xác định' }}</td>
+                                
+                                <td>
+                                    @if (!empty($comment->category->image))
+                                        <img src="{{ asset($comment->category->image) }}" 
+                                            alt="{{ $comment->category->name }}" 
+                                            class="img-thumbnail" 
+                                            style="width: 80px; height: 80px; object-fit: cover;">
+                                    @else
+                                        <span class="text-muted">Không có ảnh</span>
+                                    @endif
+                                </td>
+                                <td>{{ $comment->comment }}</td>
+                                <td>{{ $comment->created_at->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    <div class="bg-light p-2 rounded">
+                                        {{ $comment->admin_reply }}
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Gửi Phản Hồi</button>
-                                </form>
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
+                                </td>
+                                <td>
+                                    <!-- Nút phản hồi -->
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#replyModal_{{ $comment->id }}">Phản hồi</button>
+                                    <!-- Nút xóa -->
+                                    <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?')">Xóa</button>
+                                    </form>
+                                    
+                                </td>
+                            </tr>
+                            <!-- Modal phản hồi -->
+                            <div class="modal fade" id="replyModal_{{ $comment->id }}" tabindex="-1" aria-labelledby="replyModalLabel_{{ $comment->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="replyModalLabel_{{ $comment->id }}">Phản hồi bình luận</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('comments.reply', $comment->id) }}" method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="admin_reply_{{ $comment->id }}" class="form-label">Nội dung phản hồi:</label>
+                                                    <textarea class="form-control" id="admin_reply_{{ $comment->id }}" name="admin_reply" rows="3" required>{{ old('admin_reply', $comment->admin_reply) }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                <button type="submit" class="btn btn-primary">Gửi phản hồi</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </tbody>
+                </table>
             @else
-                <p>Không có bình luận nào</p>
+                <p class="text-center text-muted">Không có bình luận đã phản hồi.</p>
             @endif
-
-            <!-- Form thêm bình luận -->
-            <div class="add-review mt-4">
-                <h3>Thêm bình luận:</h3>
-                <form action="{{ route('comments.store', $category->id ?? 0) }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Tên:</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ auth()->check() ? auth()->user()->name : 'Khách' }}" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="comment" class="form-label">Bình luận:</label>
-                        <textarea class="form-control" id="comment" name="comment" rows="3" required>{{ old('comment') }}</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Gửi</button>
-                </form>
-            </div>
         </div>
     </div>
 </div>
@@ -84,66 +177,25 @@
 
 <!-- CSS Styles -->
 <style>
-    /* Căn chỉnh khoảng cách cho container */
-    .container {
-        margin-top: 50px;
-        margin-bottom: 50px;
+    .table th, .table td {
+        vertical-align: middle;
     }
 
-    /* Phong cách cho phần bình luận */
-    .review {
-        margin-top: 20px;
-    }
-    .review h3 {
-        margin-bottom: 20px;
+    .modal-content {
+        border-radius: 10px;
     }
 
-    /* Phong cách cho thẻ card */
-    .card {
-        margin-bottom: 15px;
+    .modal-header {
+        background-color: #343a40;
+        color: white;
     }
 
-    .card-body {
-        padding: 15px;
+    .modal-footer .btn-primary {
+        background-color: #007bff;
+        border: none;
     }
 
-    .card-body strong {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .card-body p {
-        margin-bottom: 5px;
-    }
-
-    .card-body small {
-        display: block;
-        margin-top: 5px;
-        color: gray;
-    }
-
-    /* Phong cách cho phần phản hồi của admin */
-    .admin-reply {
-        margin-top: 15px;
-        padding: 10px;
-        background-color: #f8f9fa;
-        border-left: 3px solid #007bff;
-    }
-
-    /* Phong cách cho form thêm bình luận */
-    .add-review {
-        margin-top: 30px;
-    }
-
-    .add-review h3 {
-        margin-bottom: 15px;
-    }
-
-    .add-review .form-control {
-        margin-bottom: 10px;
-    }
-
-    .add-review button {
-        margin-top: 10px;
+    .modal-footer .btn-primary:hover {
+        background-color: #0056b3;
     }
 </style>
