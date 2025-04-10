@@ -28,7 +28,7 @@ class OrderApprovedNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Đơn hàng #' . $this->order->id . ' của bạn đã được duyệt.',
+            'message' => 'Đơn hàng của bạn đã được duyệt.',
             'order_id' => $this->order->id,
             'url' => route('my.orders'), // Chuyển hướng đến danh sách đơn hàng của người dùng
         ];

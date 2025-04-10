@@ -31,7 +31,7 @@ class AdminReplyNotification extends Notification
             'user_name'    => $this->comment->name, // Tên người bình luận
             'admin_reply'  => $this->comment->admin_reply, // Nội dung phản hồi admin
             'category_id'  => $this->comment->category_id, // ID danh mục
-            'message'      => 'Admin phản hồi!',
+            'message'      => 'LaptopStore đã phản hồi bình luận của bạn!',
         ];
     }
 

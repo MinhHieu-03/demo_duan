@@ -49,6 +49,7 @@ public function toArray($notifiable)
         'user_name'    => $this->comment->name,
         'category_id'  => $this->comment->category_id,
         'message'      => $this->comment->name . ' đã bình luận về sản phẩm.',
+        'url'          => route('admin.comments.index')
     ];
 }
 

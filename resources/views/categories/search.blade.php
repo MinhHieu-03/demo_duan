@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Thông báo -->
+@if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 <div class="container mt-5">
     <!-- Tiêu đề kết quả tìm kiếm -->
     <h5>Kết quả tìm kiếm cho "{{ request('query') }}"</h5>
@@ -43,9 +57,9 @@
                             <p class="fw-bold">{{ number_format($category->price) }} VND</p>
                         @endif
 
-                        <!-- Form thêm vào giỏ hàng -->
-                        @if ($category->status !== 'Hết hàng')
-                            <form action="{{ route('cart.add', $category->id) }}" method="POST">
+                       <!-- Form thêm vào giỏ hàng -->
+                       @if ($category->status !== 'Hết hàng')
+                            <form action="{{ route('cart.add', $category->slug) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-primary btn-block">Thêm vào giỏ hàng</button>
                             </form>
@@ -59,6 +73,33 @@
     @endif
 </div>
 @endsection
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const loadMoreLink = document.getElementById('load-more-regular');
+    
+    if (loadMoreLink) { // Kiểm tra phần tử tồn tại
+        loadMoreLink.addEventListener('click', function (event) {
+            event.preventDefault(); // Ngăn không cho link chuyển hướng (mặc định của thẻ <a>)
+
+            const link = this;
+            let offset = parseInt(link.getAttribute('data-offset'));
+
+            fetch(`/load-more?type=regular&offset=${offset}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.html.trim()) {
+                        document.getElementById('regular-product-list').insertAdjacentHTML('beforeend', data.html);
+                        link.setAttribute('data-offset', offset + 6);
+                    } else {
+                        link.remove(); // Không còn sản phẩm thì ẩn nút
+                    }
+                })
+                .catch(error => console.error('Lỗi khi tải thêm sản phẩm:', error));
+        });
+    }
+});
+
+</script>
 
 
 

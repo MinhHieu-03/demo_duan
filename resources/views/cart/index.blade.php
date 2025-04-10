@@ -88,11 +88,11 @@
                         <div class="d-flex flex-wrap justify-content-center gap-3">
                             <form action="{{ route('checkout') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-primary ">Thanh toán khi nhận hàng</button>
+                                <button type="submit" class="btn btn-primary-buy ">Thanh toán khi nhận hàng</button>
                             </form>
                             <form action="{{ url('/vnpay_payment') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-primary " name='redirect'>Thanh toán qua VNPay</button>
+                                <button type="submit" class="btn btn-primary-buy " name='redirect'>Thanh toán qua VNPay</button>
                             </form>
                             
                         </div>
@@ -126,20 +126,20 @@
     .btn:hover {
         transform: scale(1.05);
     }
-    .btn-primary {
-            border: 2px solid #8C367B !important;
-            color: #8C367B !important;
-            background-color: white !important; /* Đảm bảo nền ban đầu là trắng */
-            transition: all 0.3s ease-in-out; /* Hiệu ứng chuyển đổi mượt mà */
-            color: white;
-        }
+    .btn-primary-buy {
+        border: 2px solid #8C367B !important;
+        color: #8C367B !important;
+        background-color: white !important; /* Đảm bảo nền ban đầu là trắng */
+        transition: all 0.3s ease-in-out; /* Hiệu ứng chuyển đổi mượt mà */
+        color: white;
+    }
 
-        .btn-primary:hover {
-            background-color: #8C367B !important;
-            color: white !important;
-            transform: scale(1.05); /* Làm nút to lên một chút khi hover */
-        }
-        .btn-primary:focus {
-            box-shadow: 0 0 0 0.25rem rgba(140, 54, 123, 0.5); /* Tạo hiệu ứng focus */
-        }
+    .btn-primary-buy:hover {
+        background-color: #8C367B !important;
+        color: white !important;
+        transform: scale(1.05); /* Làm nút to lên một chút khi hover */
+    }
+    .btn-primary-buy:focus {
+        box-shadow: 0 0 0 0.25rem rgba(140, 54, 123, 0.5); /* Tạo hiệu ứng focus */
+    }
 </style>

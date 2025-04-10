@@ -24,7 +24,7 @@ class AdminReplyMessagesNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Admin đã trả lời tin nhắn của bạn: "' . $this->reply . '".',
+            'message' => 'LaptopStore đã trả lời tin nhắn của bạn: "' . $this->reply . '".',
             'url' => route('messages.index'), // hoặc route đến trang chat của user
         ];
     }

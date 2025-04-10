@@ -33,6 +33,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const inboxMessages = document.querySelector('.inbox-messages');
+        if (inboxMessages) {
+            inboxMessages.scrollTop = inboxMessages.scrollHeight; // Cuộn xuống cuối danh sách
+        }
+
         const messageInput = document.getElementById('messageInput');
         const messageForm = document.getElementById('messageForm');
 
@@ -50,21 +55,23 @@
     .inbox-container {
         background: #f0f2f5;
         color: black;
-        height: 100%;
+        height: 500px; /* Giới hạn chiều cao khung chat */
         display: flex;
         flex-direction: column;
         border-radius: 15px;
         overflow: hidden;
         padding: 15px;
+        position: relative;
     }
 
     /* Danh sách tin nhắn cuộn */
     .inbox-messages {
         flex-grow: 1;
-        overflow-y: auto;
+        overflow-y: auto; /* Thêm cuộn dọc */
         padding: 10px;
         display: flex;
         flex-direction: column;
+        max-height: 405px; /* Giới hạn chiều cao danh sách tin nhắn */
     }
 
     /* Tin nhắn */
@@ -72,7 +79,7 @@
         max-width: 70%;
         padding: 10px;
         border-radius: 15px;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         position: relative;
     }
 
@@ -95,7 +102,12 @@
         background: white;
         padding: 10px;
         border-radius: 10px;
-        box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.1);
+        position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
     }
 
     /* Nút gửi tin nhắn */

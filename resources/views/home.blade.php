@@ -11,18 +11,18 @@
 
 <!-- Banner Carousel -->
 <div id="bannerCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
-    <div class="carousel-inner ">
-        <div class="carousel-item active">
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="2000">
             <div class="d-flex">
                 <a href="{{ route('categories.show', 44) }}" class="w-50 p-1">
                     <img class="d-block w-100 rounded" src="{{ asset('uploads/banner/def17561b525b3da25dedbf1d7cd352e.png') }}" alt="Banner 1">
                 </a>
-                <a href="{{ route('categories.show', 44) }}" class="w-50 p-1">
-                    <img class="d-block w-100 rounded" src="{{ asset('uploads/banner/00f6e44e8cd5eeb32a2eb4e55862c7dd.png') }}" alt="Banner 2">
+                <a href="{{ route('categories.show', 52) }}" class="w-50 p-1">
+                    <img class="d-block w-100 rounded" src="{{ asset('uploads/categories/7265cc3361c3423e2b5209868fabade6.png') }}" alt="Banner 2">
                 </a>
             </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-bs-interval="2000">
             <div class="d-flex">
                 <a href="{{ route('categories.show', 51) }}" class="w-50 p-1">
                     <img class="d-block w-100 rounded" src="{{ asset('uploads/banner/1c853b193d08dd63bb55bd38b299e93d.png') }}" alt="Banner 3">
@@ -109,25 +109,8 @@
     </div>
 </div>
 
-
 @endsection
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const slider = document.querySelector(".banner-slider");
-    const images = document.querySelectorAll(".banner-slider img");
-    let index = 0;
-    const imageWidth = images[0].offsetWidth + 10; // Chiều rộng ảnh + gap (10px)
-
-    setInterval(() => {
-            index++;
-            if (index >= images.length) { // Khi chạy hết ảnh, quay lại ảnh đầu
-                index = 0;
-            }
-            slider.style.transform = `translateX(${-index * imageWidth}px)`;
-        }, 4000); // Chuyển ảnh sau mỗi 4 giây
-    });
-</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     @if(session('success'))
@@ -164,8 +147,9 @@
         });
     }
 });
-
 </script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
         .row-product-section {

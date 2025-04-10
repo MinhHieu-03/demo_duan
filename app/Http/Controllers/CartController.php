@@ -14,36 +14,44 @@ class CartController extends Controller
 {
     public function add(Request $request, $slug)
     {
+        // Kiểm tra nếu người dùng chưa đăng nhập
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
+        }
+
+        // Tìm sản phẩm theo slug
         $category = Category::where('slug', $slug)->firstOrFail();
 
+        // Lấy giỏ hàng từ session
         $cart = session()->get('cart', []);
-        
+
+        // Tính giá sản phẩm (nếu có giảm giá)
         $price = $category->sale_price ?? $category->price;
 
+        // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
         if (isset($cart[$slug])) {
             $cart[$slug]['quantity']++;
         } else {
+            // Thêm sản phẩm mới vào giỏ hàng
             $cart[$slug] = [
                 'name' => $category->name,
                 'price' => $price,
                 'original_price' => $category->price,
                 'quantity' => 1,
-                'image' => $category->image  // Add this line
+                'image' => $category->image
             ];
         }
 
+        // Lưu giỏ hàng vào session
         session()->put('cart', $cart);
 
-        // Kiểm tra nếu là mua ngay -> chuyển đến giỏ hàng
+        // Nếu là "Mua Ngay", chuyển đến trang giỏ hàng
         if ($request->has('buy_now')) {
-            return redirect()->route('cart.index')->with('success', 'Đã thêm vào giỏ hàng!');
+            return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
         }
 
-        // Gửi thông báo thành công
-        session()->flash('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
-
-        return redirect()->back();
-        // return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
+        // Nếu không, quay lại trang trước
+        return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
 
 

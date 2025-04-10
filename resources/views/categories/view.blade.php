@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Thông báo -->
+@if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 <div class="container mt-5">
 <h5>DANH MỤC: "{{ $name }}"</h5>
     @if ($categories->isEmpty())
@@ -41,7 +55,7 @@
 
                         <!-- Form thêm vào giỏ hàng -->
                         @if ($category->status !== 'Hết hàng')
-                            <form action="{{ route('cart.add', $category->id) }}" method="POST">
+                            <form action="{{ route('cart.add', $category->slug) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-primary btn-block">Thêm vào giỏ hàng</button>
                             </form>
@@ -154,4 +168,3 @@
     }
 
 </style>
- 

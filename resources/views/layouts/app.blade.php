@@ -151,7 +151,9 @@
     </style>
 
 </head>
+
 <body>
+    
     <!-- Menu -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
@@ -284,7 +286,7 @@
                     @else
                     <a href="{{ route('login') }}" class="text-white d-flex align-items-center">
                         <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
-                        <span class="ms-2"></span>
+                        Giỏ hàng<span class="ms-2"></span>
                     </a>
                     @endauth
                 </div>
