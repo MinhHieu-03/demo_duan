@@ -18,7 +18,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy Laravel project files into container
 COPY . /var/www/html
 
-# Set permissions (important!)
+# Install PHP dependencies using Composer
+RUN composer install --no-dev --optimize-autoloader
+
+# Set correct permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
@@ -35,8 +38,8 @@ RUN echo '<VirtualHost *:80>\n\
     CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
 </VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
-# Expose port 80 (optional, but good practice)
+# Expose port 80
 EXPOSE 80
 
-# Use apache2-foreground script as entrypoint to start Apache in foreground
+# Start Apache in the foreground
 CMD ["apache2-foreground"]
